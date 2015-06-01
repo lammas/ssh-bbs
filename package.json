@@ -1,0 +1,11 @@
+{
+	"name": "bbs",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"blessed": "*",
+		"level": "*",
+		"bcrypt": "*",
+		"winston": "*"
+	}
+}
