@@ -19,6 +19,7 @@ Steps for building:
 
 	sudo apt-get install libssh-dev
 	npm install
+	make
 
 
 # Usage
