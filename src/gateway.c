@@ -29,13 +29,7 @@
 
 #include <stdio.h>
 
-#define LISTEN_ADDR "127.0.0.1"
-#define LISTEN_PORT "3333"
-
-#define DSA_KEY "keys/host_dsa"
 #define RSA_KEY "keys/host_rsa"
-
-#define KEYS_FOLDER "/etc/ssh/"
 
 #define BUF_SIZE 1048576
 #define SESSION_END (SSH_CLOSED | SSH_CLOSED_ERROR)
@@ -407,11 +401,41 @@ static void sigchld_handler(int signo) {
 	while (waitpid(-1, NULL, WNOHANG) > 0);
 }
 
+static int usage() {
+	printf("Usage: ssh-gateway <address> <port>\n");
+	printf("\taddress - Address to listen on (0.0.0.0 for any interface) \n");
+	printf("\tport    - Port to listen on\n\n");
+	return 1;
+}
+
+#define ADDRESS_MAX 64
+
 int main(int argc, char **argv) {
 	ssh_bind sshbind;
 	ssh_session session;
 	ssh_event event;
 	struct sigaction sa;
+
+	char address[ADDRESS_MAX];
+	unsigned int length = 0;
+	unsigned int port = 0;
+	char *pEnd;
+
+	if (argc != 3)
+		return usage();
+
+	length = strlen(argv[1]);
+	if (length < 7 || length > ADDRESS_MAX-1)
+		return usage();
+
+	strncpy(address, argv[1], length);
+	address[length] = 0;
+
+	port = strtol (argv[2], &pEnd, 10);
+	if (port == 0)
+		return usage();
+
+	printf("Trying to listen on %s:%d\n", address, port);
 
 	/* Set up SIGCHLD handler. */
 	sa.sa_handler = sigchld_handler;
@@ -425,11 +449,9 @@ int main(int argc, char **argv) {
 	ssh_init();
 	sshbind = ssh_bind_new();
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, RSA_KEY);
-	// ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_DSAKEY, DSA_KEY);
-	// ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_ECDSAKEY, KEYS_FOLDER "ssh_host_ecdsa_key");
 
-	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDADDR, LISTEN_ADDR);
-	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT_STR, LISTEN_PORT);
+	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDADDR, address);
+	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
 
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_LOG_VERBOSITY_STR, "2");
 

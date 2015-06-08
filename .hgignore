@@ -4,3 +4,5 @@ node_modules
 npm-debug.log
 auth.db
 obj/
+keys/host_rsa*
+bin/ssh-gateway
