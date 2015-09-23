@@ -3,4 +3,4 @@ bin/ssh-gateway
 keys/host_rsa
 keys/host_rsa.pub
 obj/
-
+auth.db
