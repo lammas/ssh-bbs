@@ -1,11 +1,33 @@
 {
-	"name": "bbs",
-	"version": "1.0.0",
-	"private": true,
-	"dependencies": {
-		"blessed": "*",
-		"level": "*",
-		"bcrypt": "*",
-		"winston": "*"
-	}
+  "name": "ssh-bbs",
+  "version": "1.0.0",
+  "description": "Relay chat over SSH with a Node.js backend",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lammas/ssh-bbs.git"
+  },
+  "keywords": [
+    "ssh",
+    "chat",
+    "bbs"
+  ],
+  "author": "lammas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lammas/ssh-bbs/issues"
+  },
+  "homepage": "https://github.com/lammas/ssh-bbs#readme",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "blessed": "^0.1.81",
+    "level": "^1.4.0",
+    "winston": "^2.1.1"
+  }
 }

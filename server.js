@@ -437,7 +437,7 @@ server.on('error', function(error) {
 	console.log("Server error:", error.message);
 });
 
-server.listen(port, function() {
+server.listen(port, '127.0.0.1', function() {
 	serverStart = new Date().getTime() / 1000;
 	console.log("Server listening at localhost:" + port);
 
